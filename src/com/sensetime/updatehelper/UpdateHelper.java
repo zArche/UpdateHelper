@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import com.sensetime.updatehelper.api.ApiClient;
 import com.sensetime.updatehelper.api.ApiClient.Callback;
 import com.sensetime.updatehelper.utils.FileUtil;
-import com.sensetime.updatehelper.utils.VersionUtil;
+import com.sensetime.updatehelper.utils.ApplicationUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -63,7 +63,7 @@ public class UpdateHelper {
 		dialog.setMax(100);
 		dialog.setMessage("正在下载中，请稍后...");
 		dialog.setCancelable(false);
-		downloadPath = Environment.getExternalStorageDirectory() + "/" + VersionUtil.getApplicationName(context) + "/download/";
+		downloadPath = Environment.getExternalStorageDirectory() + "/" + ApplicationUtil.getApplicationName(context) + "/download/";
 		mkdir(downloadPath);
 
 	}
@@ -132,7 +132,7 @@ public class UpdateHelper {
 			mHandler.sendEmptyMessage(HANDLER_DOWNLOAD_INTERRUPT);
 			return;
 		}
-		if(!VersionUtil.getAppPackageName(context).equals(VersionUtil.getPackageNameOfApk(context, filePath))){
+		if(!ApplicationUtil.getAppPackageName(context).equals(ApplicationUtil.getPackageNameOfApk(context, filePath))){
 			showApkCheckFailDialog();
 			return;
 		}
@@ -160,10 +160,10 @@ public class UpdateHelper {
 	}
 	
 	public void checkUpdate(final boolean isAutoCheck) {
-		String appVerCode = VersionUtil.getVersionCode(context);
-		String appVerName = VersionUtil.getVersionName(context);
+		String appVerCode = ApplicationUtil.getVersionCode(context);
+		String appVerName = ApplicationUtil.getVersionName(context);
 
-		ApiClient.getVersoinInfo(appVerCode, appVerName, new Callback() {
+		ApiClient.getVersoinInfo(appVerCode, appVerName,ApplicationUtil.getAppPackageName(context), new Callback() {
 			@Override
 			public void onPostExecute(Object result) {
 				// TODO Auto-generated method stub
@@ -184,7 +184,7 @@ public class UpdateHelper {
 							url  = data.optString("url");
 							level = data.optInt("level"); // 1:强制更新 0:非强制更新
 
-							filePath = downloadPath + VersionUtil.getApplicationName(context) + "_v" + verName + ".apk";
+							filePath = downloadPath + ApplicationUtil.getApplicationName(context) + "_v" + verName + ".apk";
 							
 							AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle("温馨提示")
 									.setMessage("最新版本号：" + verName + "\n" + "发布时间：" + "2016/8/9" + "\n" + "新版特性：\n" + msg)

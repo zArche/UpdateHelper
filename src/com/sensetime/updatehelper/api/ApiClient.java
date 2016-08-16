@@ -157,10 +157,11 @@ public class ApiClient {
 		}.execute();
 	}
 
-	public static void getVersoinInfo(String verCode, String verName, Callback cb) {
+	public static void getVersoinInfo(String verCode, String verName,String packageName, Callback cb) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("verCode", verCode);
 		params.put("verName", verName);
+		params.put("packageName", packageName);
 		requestGetWithCallback(GET_VERSION_INFO, params, cb);
 	}
 
